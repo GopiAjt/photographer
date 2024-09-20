@@ -11,7 +11,7 @@ import java.util.*;
 
 @Entity
 @Data
-public class Customer implements UserDetails{
+public class Customer {
 	
 	/**
 	 * 
@@ -40,6 +40,10 @@ public class Customer implements UserDetails{
 	@JsonManagedReference
 	@OneToMany(mappedBy = "customer", orphanRemoval = true, cascade = CascadeType.PERSIST)
 	private List<Booking> booking;
+
+	@JsonManagedReference
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
+	private Set<Favorites> favorites;
 	
 	private Date signupDateTime;
 
@@ -61,41 +65,6 @@ public class Customer implements UserDetails{
 		this.id = generateCustomId();
 	}
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return List.of(new SimpleGrantedAuthority(role));
-	}
-
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return email;
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return true;
-	}
 
 	private String generateCustomId() {
 		// Implement your custom ID generation logic here
